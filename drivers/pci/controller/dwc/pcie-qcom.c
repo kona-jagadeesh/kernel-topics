@@ -26,6 +26,7 @@
 #include <linux/pci-ecam.h>
 #include <linux/pci-pwrctrl.h>
 #include <linux/pm_opp.h>
+#include <linux/pm_domain.h>
 #include <linux/pm_runtime.h>
 #include <linux/platform_device.h>
 #include <linux/phy/pcie.h>
@@ -2361,6 +2362,8 @@ static int qcom_pcie_suspend_noirq(struct device *dev)
 
 		if (pcie->use_pm_opp)
 			dev_pm_opp_set_opp(pcie->pci->dev, NULL);
+
+		dev_pm_genpd_synced_poweroff(dev);
 	} else {
 		/*
 		 * Set minimum bandwidth required to keep data path
